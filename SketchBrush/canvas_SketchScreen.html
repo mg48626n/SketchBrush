@@ -1,0 +1,505 @@
+<html>
+   <head>
+      <style>
+         body{
+         font-size: 20px;
+         }
+         .mainheader { 
+         grid-area: header;
+         background: #000080; 
+         color: white;
+         }
+         .maintopmenu 
+         { 
+         grid-area: topmenu; 
+         border:2px dashed #000080;
+         }
+         .mainsidemenu { 
+         grid-area: sidemenu; 
+         }
+         .maincanvas { 
+         grid-area: canvas; 
+         }
+         .mainfooter { 
+         grid-area: footer;
+         }
+         .grid-container {
+         display: grid;
+         grid-template-areas:
+         'header header header'
+         'sidemenu topmenu topmenu '
+         'sidemenu canvas canvas'
+         'footer footer footer';
+         grid-gap: 5px;
+         }
+         .grid-container > div {
+         /* border:3px solid black; */
+         text-align: center;
+         /* padding: 2px 0; */
+         }
+         /* ---------------------------------------------- Header Section --------------------------------------------------- */
+         .mainheader .heading{
+         display: inline-block;
+         font-size: 2em;
+         text-shadow:black 5px 5px 5px;
+         }
+         .mainheader>img{
+         height: 45px;
+         }
+         /* ---------------------------------------------- TopMenu Section --------------------------------------------------- */
+         .color p{
+         font-weight: 900;
+         margin:10px;
+         padding:5px;
+         }
+         .color div{
+         display:inline-block;
+         margin:10px;
+         padding:5px;
+         }
+         /* ---------------------------------------------- Side Menu Section --------------------------------------------------- */
+         .brushsize{
+         background: rgb(243, 208, 208);
+         height: 30%;
+         width:60%;
+         }
+         .brushsize div{
+         display:inline-block;
+         }
+         .brushsize img{
+         height: 45px;
+         border-radius: 50%;
+         }
+         .brushsize p{
+         padding:5px;  
+         font-weight: 900;
+         }
+         .eraser{
+         margin-top:20px;
+         height: 30%;
+         width:60%;
+         background: rgb(243, 208, 208);
+         }
+         .eraser div, .eraser input{
+         margin:5px;
+         }
+         .rainbowdiv, .brushsize{
+         border:2px solid black;
+         }
+         .rainbowdiv img{
+         padding:10px;
+         border:2px solid blue;
+         }
+         /* ---------------------------------------------- Canvas Section --------------------------------------------------- */
+         .maincanvas
+         {
+         width: 100%;
+         padding-bottom: 20px;
+         }
+         #can{
+         /* background: #bbe3c6; */
+         /* padding: 5px; */
+         border:3px solid black;
+         margin:10px;
+         }
+         /* ---------------------------------------------- Footer Section --------------------------------------------------- */
+         .mainfooter{
+         background:#000080;
+         color:white;
+         padding: 20px;
+         }
+         @media screen and (max-device-width: 560px)
+         {
+         .mainheader { 
+         grid-area: header;
+         background: #000080; 
+         color: white;
+         }
+         .maintopmenu 
+         { 
+         grid-area: topmenu; 
+         }
+         .mainsidemenu { 
+         grid-area: sidemenu; 
+         }
+         .maincanvas { 
+         grid-area: canvas; 
+         }
+         .mainfooter { 
+         grid-area: footer;
+         }
+         .grid-container {
+         display: grid;
+         grid-template-columns: 1fr;
+         grid-template-areas:
+         'header'
+         'topmenu'
+         'sidemenu'
+         'canvas'
+         'footer';
+         grid-gap: 5px;
+         }
+         .grid-container > div {
+         /* border:3px solid black; */
+         text-align: center;
+         /* padding: 2px 0; */
+         }
+         }
+         @media screen and (max-width :900px) {
+         .mainheader { 
+         grid-area: header;
+         background: #000080; 
+         color: white;
+         }
+         .maintopmenu 
+         { 
+         grid-area: topmenu; 
+         }
+         .mainsidemenu { 
+         grid-area: sidemenu; 
+         }
+         .maincanvas { 
+         grid-area: canvas; 
+         }
+         .mainfooter { 
+         grid-area: footer;
+         }
+         .grid-container {
+         display: grid;
+         grid-template-columns: 1fr;
+         grid-template-areas:
+         'header'
+         'topmenu'
+         'sidemenu'
+         'canvas'
+         'footer';
+         grid-gap: 5px;
+         }
+         .grid-container > div {
+         /* border:3px solid black; */
+         text-align: center;
+         /* padding: 2px 0; */
+         }
+         }
+         @media screen and (max-width :560px) {
+         .mainheader { 
+         grid-area: header;
+         background: #000080; 
+         color: white;
+         }
+         .maintopmenu 
+         { 
+         grid-area: topmenu; 
+         }
+         .mainsidemenu { 
+         grid-area: sidemenu; 
+         }
+         .maincanvas { 
+         grid-area: canvas; 
+         }
+         .mainfooter { 
+         grid-area: footer;
+         }
+         .grid-container {
+         display: grid;
+         grid-template-columns: 1fr;
+         grid-template-areas:
+         'header'
+         'topmenu'
+         'sidemenu'
+         'canvas'
+         'footer';
+         grid-gap: 5px;
+         }
+         .grid-container > div {
+         /* border:3px solid black; */
+         text-align: center;
+         /* padding: 2px 0; */
+         }
+         }
+      </style>
+      <script type="text/javascript">
+         var canvas, ctx, flag = false,
+             prevX = 0,
+             currX = 0,
+             prevY = 0,
+             currY = 0,
+             dot_flag = false;
+         
+         var x = "black",
+             y = 2;
+         
+         function init() {
+             console.log("Hi...");
+             canvas = document.getElementById('can');
+             canvas.setAttribute('width', canvas.parentNode.offsetWidth);
+             canvas.setAttribute('height', '362');
+             ctx = canvas.getContext("2d");
+             
+             w = canvas.width;
+             h = canvas.height;
+         
+             canvas.addEventListener("mousemove", function(e) {
+                 findxy('move', e)
+             }, false);
+             canvas.addEventListener("mousedown", function(e) {
+                 findxy('down', e)
+             }, false);
+             canvas.addEventListener("mouseup", function(e) {
+                 findxy('up', e)
+             }, false);
+             canvas.addEventListener("mouseout", function(e) {
+                 findxy('out', e)
+             }, false);
+         
+             canvas.addEventListener('touchstart', function(e) {
+                 getTouchPos('down', e)
+             }, false);
+             canvas.addEventListener('touchmove', function(e) {
+                 getTouchPos('move', e)
+             }, false);
+         }
+         
+         function size(obj) {
+             switch (obj.id) {
+                 case "1":
+                     y = "1";
+                     break;
+                 case "10":
+                     y = "10";
+                     break;
+                 case "25":
+                     y = "25";
+                     break;
+                 case "50":
+                     y = "50";
+                     break;
+             
+             }
+         }
+         
+         function color(obj) {
+             switch (obj.id) {
+                 case "green":
+                     x = "green";
+                     break;
+                 case "blue":
+                     x = "blue";
+                     break;
+                 case "red":
+                     x = "red";
+                     break;
+                 case "yellow":
+                     x = "yellow";
+                     break;
+                 case "orange":
+                     x = "orange";
+                     break;
+                 case "black":
+                     x = "black";
+                     break;
+                 case "white":
+                     x = "white";
+                     break;
+                 case "rainbow":
+                     x = getPattern();
+                     break;
+             }
+             if (x == "white")
+                 y = 14;
+             else
+                 y = 2;
+         
+         }
+         
+         function getPattern() {
+             var patternCanvas = document.createElement('canvas'),
+                 dotWidth = 20,
+                 dotDistance = 5,
+                 ctx = patternCanvas.getContext('2d');
+         
+             patternCanvas.width = 35;
+             patternCanvas.height = 20;
+             ctx.fillStyle = 'red';
+             ctx.fillRect(0, 0, 5, 20);
+             ctx.fillStyle = 'orange';
+             ctx.fillRect(5, 0, 10, 20);
+             ctx.fillStyle = 'yellow';
+             ctx.fillRect(10, 0, 15, 20);
+             ctx.fillStyle = 'green';
+             ctx.fillRect(15, 0, 20, 20);
+             ctx.fillStyle = 'lightblue';
+             ctx.fillRect(20, 0, 25, 20);
+             ctx.fillStyle = 'blue';
+             ctx.fillRect(25, 0, 30, 20);
+             ctx.fillStyle = 'purple';
+             ctx.fillRect(30, 0, 35, 20);
+             return ctx.createPattern(patternCanvas, 'repeat');
+         }
+         
+         function draw() {
+             console.log("Draw");
+             ctx.beginPath();
+             ctx.lineJoin = "round";
+             ctx.lineCap = "round";
+             ctx.moveTo(prevX, prevY);
+             ctx.lineTo(currX, currY);
+             ctx.strokeStyle = x;
+         
+             ctx.lineWidth = y;
+         
+             ctx.stroke();
+             ctx.closePath();
+         
+         }
+         
+         function erase() {
+             var m = confirm("Want to clear?");
+             if (m) {
+                 ctx.clearRect(0, 0, w, h);
+         
+                 document.getElementById("canvasimg").style.display = "none";
+             }
+         }
+         
+         function save() {
+             document.getElementById("canvasimg").style.border = "2px solid";
+             var dataURL = canvas.toDataURL();
+             document.getElementById("canvasimg").src = dataURL;
+             document.getElementById("canvasimg").style.display = "inline";
+         }
+         
+         function findxy(res, e) {
+             if (res == 'down') {
+                 prevX = currX;
+                 prevY = currY;
+                 currX = e.clientX - canvas.offsetLeft;
+                 currY = e.clientY - canvas.offsetTop;
+         
+                 flag = true;
+                 dot_flag = true;
+                 if (dot_flag) {
+                     ctx.beginPath();
+                     ctx.fillStyle = x;
+                     ctx.fillRect(currX, currY, 2, 2);
+                     ctx.closePath();
+                     dot_flag = false;
+                 }
+             }
+             if (res == 'up' || res == "out") {
+                 flag = false;
+             }
+             if (res == 'move') {
+                 if (flag) {
+                     prevX = currX;
+                     prevY = currY;
+                     currX = e.clientX - canvas.offsetLeft;
+                     currY = e.clientY - canvas.offsetTop;
+                     draw();
+                 }
+             }
+         }
+         
+         function getTouchPos(res, e) {
+             if (res == 'move') {
+         
+                 if (!e)
+                     var e = event;
+         
+                 if (e.touches) {
+                     if (e.touches.length == 1) { // Only deal with one finger
+                         var touch = e.touches[0]; // Get the information for finger #1
+                         // touchX=touch.pageX-touch.target.offsetLeft;
+                         // touchY=touch.pageY-touch.target.offsetTop;
+                         prevX = currX;
+                         prevY = currY;
+                         currX = touch.clientX - canvas.offsetLeft;
+                         currY = touch.clientY - canvas.offsetTop;
+         
+                     }
+                 }
+                 draw();
+                 event.preventDefault();
+         
+             }
+         
+             if (res == 'down') {
+                 prevX = currX;
+                 prevY = currY;
+                 if (e.touches) {
+                     if (e.touches.length == 1) { // Only deal with one finger
+                         var touch = e.touches[0]; // Get the information for finger #1
+         
+                         currX = touch.clientX - canvas.offsetLeft;
+                         currY = touch.clientY - canvas.offsetTop;
+         
+                         flag = true;
+                         dot_flag = true;
+                         if (dot_flag) {
+                             ctx.beginPath();
+                             ctx.fillStyle = x;
+                             ctx.fillRect(currX, currY, 2, 2);
+                             ctx.closePath();
+                             dot_flag = false;
+                         }
+                     }
+                 }
+             }
+         
+         }
+      </script>
+   </head>
+   <body  onload="init()">
+      <div class="grid-container">
+         <div class="mainheader">
+            <p class="heading">SketchScreen</p>
+            <img src="palette-paint-brush.png">
+         </div>
+         <div class="maintopmenu">
+            <div class="color" >
+               <p>Choose color</p>
+               <div style="width:25px;height:25px;background:green;border-radius:50%;" id="green" onclick="color(this)"></div>
+               <div style="width:25px;height:25px;background:blue;border-radius:50%;" id="blue" onclick="color(this)"></div>
+               <div style="width:25px;height:25px;background:red;border-radius:50%;" id="red" onclick="color(this)"></div>
+               <div style="width:25px;height:25px;background:yellow;border-radius:50%;" id="yellow" onclick="color(this)"></div>
+               <div style="width:25px;height:25px;background:orange;border-radius:50%;" id="orange" onclick="color(this)"></div>
+               <div style="width:25px;height:25px;background:black;border-radius:50%;" id="black" onclick="color(this)"></div>
+            </div>
+         </div>
+         <div class="mainsidemenu">
+            <center>
+               <div class="brushsize">
+                  <p>Brush Size:</p>
+                  <div id="1" onclick="size(this)"><img src="small.png" ></div>
+                  <div id="10" onclick="size(this)"><img src="medium.png"></div>
+                  <br>
+                  <div id="25" onclick="size(this)"><img src="large.png"></div>
+                  <div id="50" onclick="size(this)"><img src="xlarge.png"></div>
+               </div>
+               <div class="eraser">
+                  <div>Eraser</div>
+                  <div style="width:15px;height:15px;background:white;border:2px solid;" id="white" onclick="color(this)"></div>
+                  <div>
+                     <div class="rainbowdiv">
+                        <p>Rainbow</p>
+                        <img src="paint-brush.png" id="rainbow" onclick="color(this)">
+                     </div>
+                     <input type="button" value="Preview" id="btn" size="30" onclick="save()" ><br>
+                     <input type="button" value="clear" id="clr" size="23" onclick="erase()">
+                     <img class="copyimg" id="canvasimg"style="display:none;width:150px;height:150px;">                        
+                  </div>
+               </div>
+            </center>
+         </div>
+         <div class="maincanvas">
+            <canvas id="can">
+            </canvas>
+         </div>
+         <div class="mainfooter">
+            <div class="footer">
+               <p>@2018 Manisha Gupta</p>
+            </div>
+         </div>
+      </div>
+   </body>
+</html>
